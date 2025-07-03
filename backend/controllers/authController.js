@@ -13,7 +13,7 @@ exports.login = async (req, res) => {
     if (!user) {
       return res.status(401).json({ 
         success: false,
-        message: 'username' 
+        message: 'username not correct' 
       });
     }
 
@@ -22,7 +22,7 @@ exports.login = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ 
         success: false,
-        message: 'password' 
+        message: 'password not correct' 
       });
     }
 

@@ -12,7 +12,7 @@ export const fetchWithAuth = async (url, options = {}) => {
   }
 
   // ✅ Add `/api` prefix here
-  const response = await fetch(`https://employee-task-flow.onrender.com/api${url}`, {
+  const response = await fetch(`https://employee-task-flow.onrender.com${url}`, {
     ...options,
     headers,
   });
@@ -29,7 +29,8 @@ export const fetchWithAuth = async (url, options = {}) => {
       throw new Error(data.message || `Request failed with status ${response.status}`);
     }
     return data;
-  } catch {
+  } 
+  catch  {
     throw new Error(responseText || 'Invalid JSON response');
   }
 };
