@@ -12,7 +12,7 @@ export const fetchWithAuth = async (url, options = {}) => {
   }
 
   // ✅ Add `/api` prefix here
-  const response = await fetch(`https://employee-task-flow.onrender.com${url}`, {
+  const response = await fetch(`https://employee-task-flow.onrender.com/api${url}`, {
     ...options,
     headers,
   });
