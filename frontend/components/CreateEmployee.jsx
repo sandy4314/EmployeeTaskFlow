@@ -27,6 +27,7 @@ function CreateEmployee() {
       .min(8, 'Password must be at least 8 characters'),
     position: Yup.string().required('Position is required'),
     employeeId: Yup.string().required('Employee ID is required'),
+    email: Yup.string().required('Email is required'),
   });
 
   const formik = useFormik({
@@ -38,6 +39,7 @@ function CreateEmployee() {
       password: '',
       position: '',
       employeeId: '',
+      email:''
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -65,7 +67,8 @@ function CreateEmployee() {
           password: values.password,
           position: values.position,
           employeeId: values.employeeId,
-          role: 'employee' // Include role if needed
+          role: 'employee', // Include role if needed
+          email:values.email
         })
       });
 
@@ -137,7 +140,21 @@ function CreateEmployee() {
               <p className={errorstyle}>{formik.errors.username}</p>
             )}
           </div>
-
+             <div>
+            <label className={label} htmlFor='email'>Email</label>
+            <input
+              id='email'
+              name='email'
+              type='email'
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+              className={inputfields}
+            />
+            {formik.touched.email && formik.errors.email && (
+              <p className={errorstyle}>{formik.errors.email}</p>
+            )}
+          </div>
           {/* Employee ID */}
           <div>
             <label className={label} htmlFor='employeeId'>Employee ID</label>

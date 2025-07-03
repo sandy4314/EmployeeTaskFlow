@@ -143,14 +143,14 @@ const handlesubmit = async (values) => {
             </Formik>
           </div>
           
-          <div className="px-8 py-4 bg-gray-50 border-t border-gray-200 text-center">
+          {/* <div className="px-8 py-4 bg-gray-50 border-t border-gray-200 text-center">
             <p className="text-sm text-gray-600">
               Don't have an account?{' '}
               <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
                 Contact admin
               </a>
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

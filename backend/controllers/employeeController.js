@@ -19,7 +19,7 @@ exports.getEmployees = async (req, res) => {
 // @access  Private (Admin only)
 
 exports.createEmployee = async (req, res) => {
-  const { fullName, username, domain, salary, position, employeeId,password } = req.body;
+  const { fullName, username, domain, salary, position, employeeId,password,email } = req.body;
 
   try {
     // Check for existing employee (improved error handling)
@@ -44,7 +44,8 @@ exports.createEmployee = async (req, res) => {
       salary,
       position,
       employeeId,
-      password
+      password,
+      email
     });
 
     await employee.save();
