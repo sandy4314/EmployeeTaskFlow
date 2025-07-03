@@ -15,15 +15,19 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Database connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(async () => {
-    console.log('Connected to MongoDB');
-    
-    // Initialize admin user
-    const User = require('./models/User');
-    await User.initAdminUser();
-  })
-  .catch(err => console.error('MongoDB connection error:', err));
+// Database connection
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(async () => {
+  console.log('Connected to MongoDB - Employee-Management database');
+  
+  // Initialize admin user
+  const User = require('./models/User');
+  await User.initAdminUser();
+})
+.catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
