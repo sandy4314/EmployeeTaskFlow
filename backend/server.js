@@ -6,11 +6,33 @@ const app = express();
 
 // Middleware
 // In your backend (server.js), ensure you have:
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://employee-task-flow.vercel.app',
+  'https://employee-task-flow.onrender.com'
+];
+
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://employee-task-flow.vercel.app'],
-  credentials: true
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
+
+// Apply CORS middleware
 app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 
