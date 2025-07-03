@@ -5,7 +5,13 @@ const cors = require('cors');
 const app = express();
 
 // Middleware
-app.use(cors());
+// In your backend (server.js), ensure you have:
+const corsOptions = {
+  origin: ['http://localhost:3000', 'https://employee-task-flow.vercel.app'],
+  credentials: true
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 // Database connection
