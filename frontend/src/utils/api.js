@@ -29,7 +29,7 @@ export const fetchWithAuth = async (url, options = {}) => {
       throw new Error(data.message || `Request failed with status ${response.status}`);
     }
     return data;
-  } catch  {
+  } catch (e) {
     throw new Error(responseText || 'Invalid JSON response');
   }
 };
