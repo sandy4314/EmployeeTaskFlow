@@ -2,8 +2,9 @@
 
 import { useEffect, useState,use } from 'react';
 import { fetchWithAuth } from './../../../../utils/api';
-
+import { useRouter } from 'next/navigation';
 export default function EmployeeTasks({ params }) {
+  const router=useRouter();
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -79,25 +80,35 @@ export default function EmployeeTasks({ params }) {
         <h2 className="text-2xl font-bold text-gray-800">Assigned Tasks</h2>
         
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-          <div className="relative">
-            <select 
-              onChange={(e) => setFilter(e.target.value)}
-              value={filter}
-              className="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="all">All Tasks</option>
-              <option value="new">New</option>
-              <option value="active">Active</option>
-              <option value="completed">Completed</option>
-              <option value="failed">Failed</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-              </svg>
-            </div>
-          </div>
-          
+         
+          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+  <div className="relative">
+    <select 
+      onChange={(e) => setFilter(e.target.value)}
+      value={filter}
+      className="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    >
+      <option value="all">All Tasks</option>
+      <option value="new">New</option>
+      <option value="active">Active</option>
+      <option value="completed">Completed</option>
+      <option value="failed">Failed</option>
+    </select>
+    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+      <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+      </svg>
+    </div>
+  </div>
+  <div>
+    <button onClick={()=>router.push(`../update-employee/${id}`)} className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+      </svg>
+      Update Employee
+    </button>
+  </div>
+</div>
           <span className="px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
             {filteredTasks.length} {filteredTasks.length === 1 ? 'task' : 'tasks'}
           </span>

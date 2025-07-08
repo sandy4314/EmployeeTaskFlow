@@ -14,7 +14,8 @@ const Overview = () => {
 
   useEffect(() => {
     const fetchStats = async () => {
-      try {
+      try 
+      {
         const data = await fetchWithAuth('/tasks/status');
         setStats(data);
       } catch (error) {
@@ -58,7 +59,7 @@ const Overview = () => {
       iconbg: 'bg-red-300',
       color: 'bg-red-100',
     },
-    // ... other stats ...
+   
   ];
 
   return (

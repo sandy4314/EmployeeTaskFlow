@@ -1,5 +1,5 @@
 const Employee = require('../models/Employee');
-
+const sendEmail = require('../utils/sendEmail');
 // @desc    Get all employees
 // @route   GET /api/employees
 // @access  Private (Admin only)
@@ -13,10 +13,22 @@ exports.getEmployees = async (req, res) => {
   }
 };
 
+exports.getOneEmployee= async (req,res)=>{
+  try
+  {
+    const employee= await Employee.findById(req.params.id);
+    res.json(employee);
+  }
+  catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+}
 
 // @desc    Create new employee
 // @route   POST /api/employees
 // @access  Private (Admin only)
+
 
 exports.createEmployee = async (req, res) => {
   const { fullName, username, domain, salary, position, employeeId,password,email } = req.body;
@@ -49,7 +61,20 @@ exports.createEmployee = async (req, res) => {
     });
 
     await employee.save();
+
+    await sendEmail({
+      to: employee.email,
+      subject: 'Welcome to CityFix! Your Employee Account Credentials',
+      html: `
+        <h1>Welcome ${fullName}!</h1>
+        <p>Your employee account has been created.</p>
+        <p><strong>Username:</strong> ${username}</p>
+        <p><strong>Password:</strong> ${password}</p>
+        <p>Please keep this information secure.</p>
+      `
     
+    });
+
     res.status(201).json({
       success: true,
       data: employee
@@ -65,12 +90,12 @@ exports.createEmployee = async (req, res) => {
 };
 
 exports.updateEmployee = async (req, res) => {
-  const { fullName, domain, salary, position } = req.body;
+  const { fullName, domain, salary, position,email} = req.body;
 
   try {
     const employee = await Employee.findByIdAndUpdate(
       req.params.id,
-      { fullName, domain, salary, position },
+      { fullName, domain, salary, position,email},
       { new: true }
     );
 
@@ -85,20 +110,21 @@ exports.updateEmployee = async (req, res) => {
   }
 };
 
+
 // @desc    Delete employee
 // @route   DELETE /api/employees/:id
 // @access  Private (Admin only)
-exports.deleteEmployee = async (req, res) => {
-  try {
-    const employee = await Employee.findByIdAndDelete(req.params.id);
+// exports.deleteEmployee = async (req, res) => {
+//   try {
+//     const employee = await Employee.findByIdAndDelete(req.params.id);
 
-    if (!employee) {
-      return res.status(404).json({ message: 'Employee not found' });
-    }
+//     if (!employee) {
+//       return res.status(404).json({ message: 'Employee not found' });
+//     }
 
-    res.json({ message: 'Employee removed' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
+//     res.json({ message: 'Employee removed' });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// };

@@ -1,16 +1,20 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect,use } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import { fetchWithAuth } from '@/utils/api';
 
-function CreateEmployee() {
+function UpdateEmployee({ params }) {
+  
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const paramsid=use(params);
+  const id = paramsid.id;
 
-  // Style constants - moved inside the component function
+  // Style constants
   const inputfields = 'border border-gray-300 p-2 rounded-lg w-full';
   const label = 'text-black-600 mb-2';
   const errorstyle = 'mt-1 text-sm text-red-600';
@@ -23,11 +27,10 @@ function CreateEmployee() {
       .required('Salary is required')
       .positive('Salary must be a positive number'),
     password: Yup.string()
-      .required('Password is required')
       .min(8, 'Password must be at least 8 characters'),
     position: Yup.string().required('Position is required'),
     employeeId: Yup.string().required('Employee ID is required'),
-    email: Yup.string().required('Email is required'),
+    email: Yup.string().required('Email is required').email('Invalid email format'),
   });
 
   const formik = useFormik({
@@ -36,50 +39,66 @@ function CreateEmployee() {
       username: '',
       domain: '',
       salary: '',
-      password: '',
+      password: '', // Password is optional for update
       position: '',
       employeeId: '',
-      email:''
+      email: ''
     },
     validationSchema,
     onSubmit: async (values) => {
-  setIsSubmitting(true);
-  setSubmitError(null);
-  
-  try {
-    // Register user
-    await fetchWithAuth('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify({
-        username: values.username,
-        password: values.password,
-        role: 'employee'
-      })
-    });
+      setIsSubmitting(true);
+      setSubmitError(null);
+      
+      try {
+        await fetchWithAuth(`/employees/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            fullName: values.fullName,
+            username: values.username,
+            domain: values.domain,
+            salary: values.salary,
+            position: values.position,
+            employeeId: values.employeeId,
+            email: values.email,
+            ...(values.password && { password: values.password }) // Only include password if it's provided
+          })
+        });
 
-    await fetchWithAuth('/employees', {
-        method: 'POST',
-        body: JSON.stringify({
-          fullName: values.fullName,
-          username: values.username,
-          domain: values.domain,
-          salary: values.salary,
-          password: values.password,
-          position: values.position,
-          employeeId: values.employeeId,
-          role: 'employee', // Include role if needed
-          email:values.email
-        })
-      });
-
-    router.push('/admin-dashboard/employees');
-  } catch (error) {
-    setSubmitError(error.message);
-  } finally {
-    setIsSubmitting(false);
-  }
-},
+        router.push('/admin-dashboard/employees');
+      } catch (error) {
+        setSubmitError(error.message || 'Failed to update employee');
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
   });
+
+  // Fetch employee data when component mounts
+  useEffect(() => {
+    const fetchEmployeeData = async () => {
+      try {
+        const employeeData = await fetchWithAuth(`/employees/${id}`);
+       
+        
+        formik.setValues({
+          fullName: employeeData.fullName || '',
+          username: employeeData.username || '',
+          domain: employeeData.domain || '',
+          salary: employeeData.salary || '',
+          password: employeeData.password || '',
+          position: employeeData.position || '',
+          employeeId: employeeData.employeeId || '',
+          email: employeeData.email || ''
+        });
+      } catch (error) {
+        setSubmitError(error.message || 'Failed to load employee data');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEmployeeData();
+  }, [id]);
 
   const domains = [
     'Design',
@@ -95,16 +114,23 @@ function CreateEmployee() {
     router.back();
   };
 
+   if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="px-4 py-6 sm:px-8">
-      <p className="text-2xl font-semibold mb-4 sm:text-left">Create Employee</p>
+      <p className="text-2xl font-semibold mb-4 sm:text-left">Update Employee</p>
       <div className="bg-white p-6 rounded-xl w-full max-w-4xl">
         {submitError && (
           <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
             {submitError}
           </div>
         )}
-
 
         <form onSubmit={formik.handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* Full Name */}
@@ -135,12 +161,15 @@ function CreateEmployee() {
               onBlur={formik.handleBlur}
               value={formik.values.username}
               className={inputfields}
+              disabled
             />
             {formik.touched.username && formik.errors.username && (
               <p className={errorstyle}>{formik.errors.username}</p>
             )}
           </div>
-             <div>
+          
+          {/* Email */}
+          <div>
             <label className={label} htmlFor='email'>Email</label>
             <input
               id='email'
@@ -155,6 +184,7 @@ function CreateEmployee() {
               <p className={errorstyle}>{formik.errors.email}</p>
             )}
           </div>
+          
           {/* Employee ID */}
           <div>
             <label className={label} htmlFor='employeeId'>Employee ID</label>
@@ -174,7 +204,7 @@ function CreateEmployee() {
 
           {/* Domain */}
           <div>
-            <label className={label} htmlFor='domain'>Employee Domain</label>
+            <label className={label} htmlFor='domain'> Domain</label>
             <select
               id='domain'
               name='domain'
@@ -238,6 +268,8 @@ function CreateEmployee() {
               onBlur={formik.handleBlur}
               value={formik.values.password}
               className={inputfields}
+          
+              disabled
             />
             {formik.touched.password && formik.errors.password && (
               <p className={errorstyle}>{formik.errors.password}</p>
@@ -247,7 +279,7 @@ function CreateEmployee() {
           <div className="col-span-1 sm:col-span-2 flex justify-end gap-4">
             <button
               type="button"
-              onClick={() => formik.resetForm()}
+              onClick={handleCancel}
               disabled={isSubmitting}
               className="px-4 py-2 border border-gray-500 text-black rounded flex gap-2 disabled:opacity-50"
             >
@@ -259,10 +291,10 @@ function CreateEmployee() {
               className="px-4 py-2 bg-blue-500 text-white rounded flex gap-2 disabled:bg-blue-300"
             >
               {isSubmitting ? (
-                'Creating...'
+                'Updating...'
               ) : (
                 <>
-                  <i className="bi bi-floppy"></i> Save Employee
+                  <i className="bi bi-floppy"></i> Update Employee
                 </>
               )}
             </button>
@@ -273,4 +305,4 @@ function CreateEmployee() {
   );
 }
 
-export default CreateEmployee;
+export default UpdateEmployee;
