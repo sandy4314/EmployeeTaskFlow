@@ -24,6 +24,7 @@ exports.login = async (req, res) => {
         success: false,
         message: 'password not correct' 
       });
+
     }
 
     // Create token
@@ -42,6 +43,7 @@ exports.login = async (req, res) => {
         role: user.role
       }
     });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ 
@@ -66,6 +68,7 @@ exports.register = async (req, res) => {
         message: 'Username already exists' 
       });
     }
+    
 
     // Create new user
     const user = new User({ username, password, role });

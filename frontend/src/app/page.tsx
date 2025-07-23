@@ -1,103 +1,101 @@
+'use client';
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const router = useRouter();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const handleLoginClick = () => {
+    router.push('/login');
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <header className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">Employee Task Flow</h1>
+          <p className="text-xl text-gray-600">Streamline your work tasks efficiently</p>
+        </header>
+
+        {/* Hero Section */}
+        <div className="flex flex-col md:flex-row gap-12 items-center mb-16">
+          <div className="md:w-1/2">
+            <img
+              src="https://www.cflowapps.com/wp-content/uploads/2018/07/task-management-process.png" 
+              alt="Task Management"
+              width={500}
+              height={400}
+              className="w-full h-auto"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
+          <div className="md:w-1/2 space-y-6">
+            <h2 className="text-3xl font-semibold text-gray-800">Get Started</h2>
+            <p className="text-lg text-gray-600">
+              Manage your tasks, track progress, and collaborate with your team seamlessly.
+            </p>
+            <button
+              onClick={handleLoginClick}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg text-lg transition duration-300 flex items-center gap-2"
+            >
+              <i className="bi bi-box-arrow-in-right text-xl"></i>
+              Login to Your Account
+            </button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Features Section */}
+        <div className="bg-white rounded-xl shadow-lg p-8 mb-16">
+          <h2 className="text-3xl font-semibold text-center text-gray-800 mb-12">Key Features</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center p-6 rounded-lg hover:bg-blue-50 transition">
+              <i className="bi bi-list-task text-4xl text-blue-600 mb-4"></i>
+              <h3 className="text-xl font-medium text-gray-800 mb-2">Task Management</h3>
+              <p className="text-gray-600">Create, assign and track tasks with ease</p>
+            </div>
+            <div className="text-center p-6 rounded-lg hover:bg-blue-50 transition">
+              <i className="bi bi-graph-up text-4xl text-blue-600 mb-4"></i>
+              <h3 className="text-xl font-medium text-gray-800 mb-2">Progress Tracking</h3>
+              <p className="text-gray-600">Monitor your work progress in real-time</p>
+            </div>
+            <div className="text-center p-6 rounded-lg hover:bg-blue-50 transition">
+              <i className="bi bi-people text-4xl text-blue-600 mb-4"></i>
+              <h3 className="text-xl font-medium text-gray-800 mb-2">Team Collaboration</h3>
+              <p className="text-gray-600">Work together with your colleagues</p>
+            </div>
+          </div>
+        </div>
+
+        {/* About Section */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-semibold text-center text-gray-800 mb-8">About Employee Task Flow</h2>
+          <div className="space-y-6 text-lg text-gray-700">
+            <p>
+              Employee Task Flow is a comprehensive task management system designed to help employees and administrators 
+              organize, track, and complete work assignments efficiently.
+            </p>
+            <p>
+              Our platform provides a user-friendly interface that simplifies task delegation, progress monitoring, 
+              and team collaboration, making it easier for organizations to achieve their goals.
+            </p>
+            <p>
+              Whether you're an employee looking to manage your daily tasks or an administrator overseeing team 
+              productivity, Employee Task Flow has the tools you need to succeed.
+            </p>
+          </div>
+        </div>
+
+        {/* Call to Action */}
+        <div className="text-center bg-blue-600 rounded-xl p-8 text-white">
+          <h2 className="text-2xl font-semibold mb-4">Ready to boost your productivity?</h2>
+          <button
+            onClick={handleLoginClick}
+            className="bg-white text-blue-600 hover:bg-gray-100 font-medium py-3 px-8 rounded-lg text-lg transition duration-300"
+          >
+            Get Started Now
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

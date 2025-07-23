@@ -14,8 +14,8 @@ router.route('/')
   .post(employeeController.createEmployee);
 
 router.route('/:id')
+  .get(employeeController.getOneEmployee)
   .put(employeeController.updateEmployee)
-   .get(employeeController.getOneEmployee)
-  // .delete(employeeController.deleteEmployee);
+  .delete(employeeController.deleteEmployee);
 
 module.exports = router;

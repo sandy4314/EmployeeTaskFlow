@@ -14,7 +14,9 @@ export default function Login() {
     username: Yup.string().required("Username is required"),
     password: Yup.string().required('Password is required')
 
+    
   });
+
 const handlesubmit = async (values) => {
   setIsLoading(true);
   const { username, password } = values;
@@ -26,7 +28,9 @@ const handlesubmit = async (values) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username, password }),
+
     });
+
 
     const data = await response.json();
 
@@ -39,9 +43,11 @@ const handlesubmit = async (values) => {
     localStorage.setItem('role', data.user.role);
     
     router.push(data.user.role === "admin" ? '/admin-dashboard' : '/employee-dashboard');
-  } catch (err) {
+  } 
+  catch (err) {
     alert(err.message);
-  } finally {
+  } 
+  finally {
     setIsLoading(false);
   }
 };

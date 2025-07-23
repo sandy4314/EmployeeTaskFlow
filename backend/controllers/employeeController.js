@@ -1,5 +1,6 @@
 const Employee = require('../models/Employee');
 const sendEmail = require('../utils/sendEmail');
+const User = require('../models/User');
 // @desc    Get all employees
 // @route   GET /api/employees
 // @access  Private (Admin only)
@@ -114,17 +115,34 @@ exports.updateEmployee = async (req, res) => {
 // @desc    Delete employee
 // @route   DELETE /api/employees/:id
 // @access  Private (Admin only)
-// exports.deleteEmployee = async (req, res) => {
-//   try {
-//     const employee = await Employee.findByIdAndDelete(req.params.id);
 
-//     if (!employee) {
-//       return res.status(404).json({ message: 'Employee not found' });
-//     }
+exports.deleteEmployee = async (req, res) => {
+  try {
+    // First find the employee to get their username
+    const employee = await Employee.findById(req.params.id);
+    
+    if (!employee) {
+      return res.status(404).json({ 
+        success: false,
+        message: 'Employee not found' 
+      });
+    }
 
-//     res.json({ message: 'Employee removed' });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// };
+    // Delete the employee's user credentials
+    await User.findOneAndDelete({ username: employee.username });
+
+    // Then delete the employee
+    await Employee.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      message: 'Employee and their login credentials deleted successfully'
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ 
+      success: false,
+      message: 'Server error' 
+    });
+  }
+};
