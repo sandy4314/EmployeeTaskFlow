@@ -21,12 +21,13 @@ export default function Home() {
         {/* Hero Section */}
         <div className="flex flex-col md:flex-row gap-12 items-center mb-16">
           <div className="md:w-1/2">
-            <img
-              src="https://www.cflowapps.com/wp-content/uploads/2018/07/task-management-process.png" 
+            <Image
+              src="https://www.cflowapps.com/wp-content/uploads/2018/07/task-management-process.png"
               alt="Task Management"
               width={500}
               height={400}
               className="w-full h-auto"
+              priority
             />
           </div>
           <div className="md:w-1/2 space-y-6">
@@ -79,7 +80,7 @@ export default function Home() {
               and team collaboration, making it easier for organizations to achieve their goals.
             </p>
             <p>
-              Whether you're an employee looking to manage your daily tasks or an administrator overseeing team 
+              Whether you&apos;re an employee looking to manage your daily tasks or an administrator overseeing team 
               productivity, Employee Task Flow has the tools you need to succeed.
             </p>
           </div>
