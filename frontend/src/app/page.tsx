@@ -112,7 +112,7 @@ export default function Home() {
                 </li>
                 <li className="flex items-start gap-3">
                   <FiCheckCircle className="text-blue-500 mt-1" />
-                  <span className="text-gray-700">Customizable to fit your team's unique needs</span>
+                  <span className="text-gray-700">Customizable to fit your team&apos;s unique needs</span>
                 </li>
               </ul>
             </div>
