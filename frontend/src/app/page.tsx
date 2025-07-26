@@ -82,10 +82,17 @@ export default function Home() {
                   Employee Task Flow is designed to transform how teams organize and execute their work. 
                   We combine simplicity with powerful features to help you focus on what matters most.
                 </p>
-                <p>
-                  Our platform adapts to your workflow, whether you're managing personal tasks or coordinating 
-                  complex projects across multiple teams.
-                </p>
+               
+
+
+
+<p>Our platform adapts to your workflow, whether you&apos;re managing personal tasks</p>
+
+
+
+
+
+<span className="text-gray-700">Customizable to fit your team&apos;s unique needs</span>
               </div>
             </div>
             <div className="bg-blue-50 rounded-lg p-8 border border-blue-100">
