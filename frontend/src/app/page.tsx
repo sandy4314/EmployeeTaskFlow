@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
-
+import Banner from "task-banner.png"
 export default function Home() {
   const router = useRouter();
 
@@ -22,7 +22,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row gap-12 items-center mb-16">
           <div className="md:w-1/2">
             <Image
-              src="https://www.cflowapps.com/wp-content/uploads/2018/07/task-management-process.png"
+              src={Banner}
               alt="Task Management"
               width={500}
               height={400}
