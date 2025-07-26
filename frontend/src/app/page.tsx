@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
-import Banner from "task-banner.png"
+import Banner from "/task-banner.png"
 export default function Home() {
   const router = useRouter();
 
