@@ -86,9 +86,9 @@ export default function Home() {
 
 
 
-<p>Our platform adapts to your workflow, whether you&apos;re managing personal tasks</p>
+{/* <p>Our platform adapts to your workflow, whether you&apos;re managing personal tasks</p>
 
-
+ */}
 
 
 
@@ -108,7 +108,7 @@ export default function Home() {
                 </li>
                 <li className="flex items-start gap-3">
                   <FiCheckCircle className="text-blue-500 mt-1" />
-                  <span className="text-gray-700">Secure and reliable cloud-based platform</span>
+                  <span className="text-gray-700">Secure and reliable platform</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <FiCheckCircle className="text-blue-500 mt-1" />
@@ -122,9 +122,9 @@ export default function Home() {
         {/* Call to Action */}
         <div className="text-center bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-12 text-white">
           <h2 className="text-3xl font-semibold mb-6">Ready to transform your workflow?</h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+          {/* <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
             Join thousands of teams who are already working smarter with Employee Task Flow
-          </p>
+          </p> */}
           <button
             onClick={handleLoginClick}
             className="bg-white text-blue-600 hover:bg-gray-100 font-medium py-3 px-8 rounded-lg text-lg transition duration-300 flex items-center gap-2 mx-auto"
