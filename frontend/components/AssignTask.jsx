@@ -8,6 +8,7 @@ import { fetchWithAuth } from '@/utils/api';
 function AssignTask() {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState({ text: '', type: '' });
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -58,13 +59,17 @@ function AssignTask() {
           },
           body: JSON.stringify(values)
         });
-        alert('Task assigned successfully!');
+        showMessage('Task assigned successfully!', 'success');
         formik.resetForm();
       } catch (error) {
-        alert(error.message);
+        showMessage(error.message, 'error');
       }
     },
   });
+    const showMessage = (text, type = 'info', duration = 3000) => {
+    setMessage({ text, type });
+    setTimeout(() => setMessage({ text: '', type: '' }), duration);
+  };
 
   const inputfields = 'border border-gray-300 p-2 rounded-lg w-full';
   const label = 'text-gray-800 mb-2 font-semibold block';
@@ -79,7 +84,28 @@ function AssignTask() {
   }
 
   return (
-    <div className="p-4 rounded">
+    <div className="p-4 rounded relative">
+      {message.text && (
+        <div className={`fixed top-4 right-4 z-50 p-4 rounded-md shadow-lg ${
+          message.type === 'error' ? 'bg-red-100 text-red-800' : 
+          message.type === 'success' ? 'bg-green-100 text-green-800' :
+          'bg-blue-100 text-blue-800'
+        }`}>
+          <div className="flex items-center">
+            {message.type === 'success' && (
+              <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            )}
+            {message.type === 'error' && (
+              <svg className="h-5 w-5 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            )}
+            <span>{message.text}</span>
+          </div>
+        </div>
+      )}
       <p className="text-2xl font-semibold mb-6">Assign New Task</p>
 
       {employees.length === 0 ? (

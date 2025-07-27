@@ -13,14 +13,14 @@ export default function EmployeeTasks({ params }) {
   const [selectedTask, setSelectedTask] = useState(null);
   const [timeDetails, setTimeDetails] = useState(null);
   const [message, setMessage] = useState({ text: '', type: '' });
-  
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+
   const paramsid=use(params);
   const id = paramsid.id;
 
   const deleteEmployee = async () => {
-    if (!window.confirm('Are you sure you want to delete this employee? This action cannot be undone.')) {
-      return;
-    }
+   
 
     try {
       const response = await fetchWithAuth(`/employees/${id}`, {
@@ -29,12 +29,14 @@ export default function EmployeeTasks({ params }) {
 
       if (response.success) {
         showMessage('Employee deleted successfully', 'success');
+        setShowDeleteModal(false);
         setTimeout(() => {
           router.push('/admin-dashboard/employees');
         }, 1500);
       }
     } catch (error) {
       showMessage(error.message || 'Failed to delete employee', 'error');
+      setShowDeleteModal(false);
     }
   };
 
@@ -104,6 +106,43 @@ export default function EmployeeTasks({ params }) {
 
   return (
     <div className="space-y-6 p-4">
+       {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-bold text-gray-800">Confirm Deletion</h3>
+              <button 
+                onClick={() => setShowDeleteModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete this employee? This action cannot be undone.
+            </p>
+            
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={deleteEmployee}
+                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              >
+                Delete Employee
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Message Toast */}
       {message.text && (
         <div className={`fixed top-4 right-4 z-50 p-4 rounded-md shadow-lg ${
@@ -150,14 +189,14 @@ export default function EmployeeTasks({ params }) {
                 Update
               </button>
               <button 
-                onClick={deleteEmployee}
-                className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                </svg>
-                Delete
-              </button>
+            onClick={() => setShowDeleteModal(true)} // Changed to open modal
+            className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+            Delete
+          </button>
             </div>
           </div>
           <span className="px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">

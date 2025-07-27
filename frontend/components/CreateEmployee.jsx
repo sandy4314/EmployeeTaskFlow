@@ -9,7 +9,7 @@ function CreateEmployee() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
-
+    const [message, setMessage] = useState({ text: '', type: '' });
   // Style constants - moved inside the component function
   const inputfields = 'border border-gray-300 p-2 rounded-lg w-full';
   const label = 'text-black-600 mb-2';
@@ -72,14 +72,22 @@ function CreateEmployee() {
         })
       });
 
-    router.push('/admin-dashboard/employees');
+     showMessage('Employee created successfully!', 'success');
+        setTimeout(() => {
+          router.push('/admin-dashboard/employees');
+        }, 1500);
+
   } catch (error) {
-    setSubmitError(error.message);
+    showMessage(error.message, 'error');
   } finally {
     setIsSubmitting(false);
   }
 },
   });
+   const showMessage = (text, type = 'info', duration = 3000) => {
+    setMessage({ text, type });
+    setTimeout(() => setMessage({ text: '', type: '' }), duration);
+  };
 
   const domains = [
     'Design',
@@ -96,7 +104,29 @@ function CreateEmployee() {
   };
 
   return (
-    <div className="px-4 py-6 sm:px-8">
+    <div className="px-4 py-6 sm:px-8 ">
+      {message.text && (
+        <div className={`fixed top-4 right-4 z-50 p-4 rounded-md shadow-lg ${
+          message.type === 'error' ? 'bg-red-100 text-red-800' : 
+          message.type === 'success' ? 'bg-green-100 text-green-800' :
+          'bg-blue-100 text-blue-800'
+        }`}>
+          <div className="flex items-center">
+            {message.type === 'success' && (
+              <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            )}
+            {message.type === 'error' && (
+              <svg className="h-5 w-5 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            )}
+            <span>{message.text}</span>
+          </div>
+        </div>
+      )}
+      
       <p className="text-2xl font-semibold mb-4 sm:text-left">Create Employee</p>
       <div className="bg-white p-6 rounded-xl w-full max-w-4xl">
         {submitError && (
